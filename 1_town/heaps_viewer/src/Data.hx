@@ -1,7 +1,13 @@
 import haxe.Json;
+import StringTools;
+import haxe.io.Path;
+#if sys
+import sys.FileSystem;
+import sys.io.File;
+#end
 
 class Data {
-    // Raw JDW/JDA blobs (declared first so HL init order is safe)
+    // Raw JDW/JDA blobs (fallback; declared first for HL init order)
     static final sceneData = '
     {
       "id": "town_scene",
@@ -190,33 +196,68 @@ class Data {
       }
     }';
 
-    // Parsed objects (after the raw strings)
-    public static final scene:Dynamic = parse(sceneData);
-    public static final ground:Dynamic = parse(groundData);
-    public static final buildingPrimitive:Dynamic = parse(buildingPrimitiveData);
-    public static final buildingHybrid:Dynamic = parse(buildingHybridData);
-    public static final facadeWindow:Dynamic = parse(facadeWindowData);
-    public static final roofComplex:Dynamic = parse(roofComplexData);
-    public static final treeStylized:Dynamic = parse(treeStylizedData);
-    public static final materials:Dynamic = parse(materialsData);
-    public static final shaderSimpleLit:Dynamic = parse(simpleLitData);
-
-    public static final assets:Array<Dynamic> = [
-        ground,
-        buildingPrimitive,
-        buildingHybrid,
-        facadeWindow,
-        roofComplex,
-        treeStylized
-    ];
-
-    public static function assetById():Map<String, Dynamic> {
-        var m = new Map<String, Dynamic>();
-        for (a in assets) {
-            m.set(a.id, a);
+    static function loadFromFiles():{ scene:Dynamic, assets:Map<String, Dynamic>, materials:Dynamic, shaderSimpleLit:Dynamic } {
+        #if sys
+        var base = haxe.io.Path.normalize("../jdw");
+        var outScene:Dynamic = null;
+        var outAssets = new Map<String, Dynamic>();
+        if (FileSystem.exists(base) && FileSystem.isDirectory(base)) {
+            for (f in FileSystem.readDirectory(base)) {
+                if (!StringTools.endsWith(f, ".json")) continue;
+                var path = base + "/" + f;
+                try {
+                    var parsed:Dynamic = Json.parse(File.getContent(path));
+                    if (parsed == null) continue;
+                    switch (parsed.type) {
+                        case "jdw.scene": outScene = parsed;
+                        case "jda.asset":
+                            if (parsed.id != null) outAssets.set(parsed.id, parsed);
+                        default:
+                    }
+                } catch (e:Dynamic) {
+                    // ignore bad file; fallback will cover
+                }
+            }
         }
-        return m;
+        if (outScene != null && outAssets.keys().hasNext()) {
+            var mats = outAssets.exists("materials_town") ? outAssets.get("materials_town") : null;
+            var shader = outAssets.exists("simple_lit_shader") ? outAssets.get("simple_lit_shader") : null;
+            return { scene: outScene, assets: outAssets, materials: mats, shaderSimpleLit: shader };
+        }
+        #end
+        return null;
     }
+
+    static function loadFallback():{ scene:Dynamic, assets:Map<String, Dynamic>, materials:Dynamic, shaderSimpleLit:Dynamic } {
+        var m = new Map<String, Dynamic>();
+        var g = parse(groundData);
+        var b1 = parse(buildingPrimitiveData);
+        var b2 = parse(buildingHybridData);
+        var fw = parse(facadeWindowData);
+        var rc = parse(roofComplexData);
+        var tr = parse(treeStylizedData);
+        m.set(g.id, g);
+        m.set(b1.id, b1);
+        m.set(b2.id, b2);
+        m.set(fw.id, fw);
+        m.set(rc.id, rc);
+        m.set(tr.id, tr);
+        var mats = parse(materialsData);
+        m.set(mats.id, mats);
+        var shader = parse(simpleLitData);
+        m.set(shader.id, shader);
+        return { scene: parse(sceneData), assets: m, materials: mats, shaderSimpleLit: shader };
+    }
+
+    static final loaded = (function() {
+        var fromFiles = loadFromFiles();
+        return fromFiles != null ? fromFiles : loadFallback();
+    })();
+
+    public static final scene:Dynamic = loaded.scene;
+    public static final assets:Map<String, Dynamic> = loaded.assets;
+    public static final materials:Dynamic = loaded.materials;
+    public static final shaderSimpleLit:Dynamic = loaded.shaderSimpleLit;
 
     static inline function parse(raw:String):Dynamic {
         return Json.parse(stripComments(raw));
@@ -226,9 +267,7 @@ class Data {
         var cleaned = new StringBuf();
         for (line in raw.split("\n")) {
             var idx = line.indexOf("//");
-            if (idx != -1) {
-                line = line.substr(0, idx);
-            }
+            if (idx != -1) line = line.substr(0, idx);
             cleaned.add(line);
             cleaned.add("\n");
         }

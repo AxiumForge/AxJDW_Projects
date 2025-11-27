@@ -1,0 +1,10 @@
+{
+  "general": {
+    "vimMode": false
+  },
+  "security": {
+    "folderTrust": {
+      "enabled": true
+    }
+  }
+}

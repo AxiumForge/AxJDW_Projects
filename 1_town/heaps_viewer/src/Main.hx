@@ -7,26 +7,35 @@ import h3d.scene.Mesh;
 import h3d.scene.fwd.DirLight;
 import hxd.App;
 import hxd.Key;
+import hxd.Event;
+import hxd.Window;
 import haxe.ds.StringMap;
 
 class Main extends App {
     var materials:StringMap<Material>;
     var assets:Map<String, Dynamic>;
 
-    var yaw = Math.PI / 4;
-    var pitch = 0.35;
-    var distance = 42.0;
+    var yaw = Math.PI / 4; // around Y axis
+    var pitch = Math.PI / 4; // 45 degrees above plane
+    var distance = 55.0;
+    var target = new h3d.Vector(0, 3, 0);
+
+    var dragging = false;
+    final dragSpeed = 0.002;
+    final zoomStep = 2.0;
+    final panStep = 15.0;
 
     override function init() {
         new DirLight(new h3d.Vector(0.6, -1.0, 0.3), s3d);
 
-        assets = Data.assetById();
+        assets = Data.assets;
         materials = buildMaterialMap();
 
         for (node in (cast Data.scene.nodes:Array<Dynamic>)) {
             addNode(node, s3d);
         }
 
+        setupInput();
         updateCamera();
     }
 
@@ -34,24 +43,69 @@ class Main extends App {
         var rotSpeed = 0.9 * dt;
         var zoomSpeed = 30 * dt;
 
-        if (Key.isDown(Key.LEFT)) yaw -= rotSpeed;
-        if (Key.isDown(Key.RIGHT)) yaw += rotSpeed;
-        if (Key.isDown(Key.UP)) pitch = Math.min(1.2, pitch + rotSpeed);
-        if (Key.isDown(Key.DOWN)) pitch = Math.max(0.05, pitch - rotSpeed);
+        if (Key.isDown(Key.LEFT) || Key.isDown(Key.A)) yaw -= rotSpeed;
+        if (Key.isDown(Key.RIGHT) || Key.isDown(Key.D)) yaw += rotSpeed;
+        if (Key.isDown(Key.UP) || Key.isDown(Key.E)) pitch = Math.min(1.2, pitch + rotSpeed);
+        if (Key.isDown(Key.DOWN) || Key.isDown(Key.Q)) pitch = Math.max(0.05, pitch - rotSpeed);
         if (Key.isDown(Key.W)) distance = Math.max(12, distance - zoomSpeed);
-        if (Key.isDown(Key.S)) distance = Math.min(80, distance + zoomSpeed);
+        if (Key.isDown(Key.S)) distance = Math.min(120, distance + zoomSpeed);
+        if (Key.isDown(Key.Z)) target.y = Math.max(0, target.y - panStep * dt);
+        if (Key.isDown(Key.X)) target.y = Math.min(15, target.y + panStep * dt);
+
+        if (Key.isDown(Key.SHIFT)) {
+            var forward = new h3d.Vector(Math.cos(yaw), 0, Math.sin(yaw));
+            var right = new h3d.Vector(-forward.z, 0, forward.x);
+            if (Key.isDown(Key.W)) {
+                target.x += forward.x * panStep * dt;
+                target.z += forward.z * panStep * dt;
+            }
+            if (Key.isDown(Key.S)) {
+                target.x -= forward.x * panStep * dt;
+                target.z -= forward.z * panStep * dt;
+            }
+            if (Key.isDown(Key.A)) {
+                target.x -= right.x * panStep * dt;
+                target.z -= right.z * panStep * dt;
+            }
+            if (Key.isDown(Key.D)) {
+                target.x += right.x * panStep * dt;
+                target.z += right.z * panStep * dt;
+            }
+        }
 
         updateCamera();
+    }
+
+    function setupInput() {
+        Window.getInstance().addEventTarget(handleEvent);
+    }
+
+    function handleEvent(e:Event) {
+        switch (e.kind) {
+            case EPush:
+                if (e.button == 0) dragging = true;
+            case ERelease:
+                if (e.button == 0) dragging = false;
+            case EMove:
+                if (dragging) {
+                    yaw += e.relX * dragSpeed;
+                    pitch = Math.min(1.2, Math.max(0.1, pitch + e.relY * dragSpeed));
+                }
+            case EWheel:
+                distance = Math.max(12, Math.min(120, distance - e.wheelDelta * zoomStep));
+            default:
+        }
     }
 
     function updateCamera() {
         var cam = s3d.camera;
         var cosPitch = Math.cos(pitch);
-        var x = Math.cos(yaw) * distance * cosPitch;
-        var z = Math.sin(yaw) * distance * cosPitch;
-        var y = Math.sin(pitch) * distance + 6;
+        var x = target.x + Math.cos(yaw) * distance * cosPitch;
+        var z = target.z + Math.sin(yaw) * distance * cosPitch;
+        var y = target.y + Math.sin(pitch) * distance + 3;
         cam.pos.set(x, y, z);
-        cam.target.set(0, 3, 0);
+        cam.target.set(target.x, target.y, target.z);
+        cam.up.set(0, 1, 0);
     }
 
     function addNode(node:Dynamic, parent:h3d.scene.Object) {
@@ -94,15 +148,15 @@ class Main extends App {
         var prim:h3d.prim.Primitive;
         switch (data.primitive_type) {
             case "cylinder":
-                prim = new Cylinder(24, 1, 1, true);
+                prim = new Cylinder(64, 1, 1, true); // smoother silhouette
             case "box":
                 prim = new Cube();
             case "pyramid":
                 prim = new Cube(); // placeholder for pyramid
             case "sphere":
-                prim = new Sphere();
+                prim = new Sphere(1, 64, 64); // higher tessellation for round shapes
             case "cone":
-                prim = new Cylinder(24, 1, 1, true); // placeholder for cone
+                prim = new Cylinder(64, 1, 1, true); // placeholder for cone, more segments
             default:
                 prim = new Cube();
         }

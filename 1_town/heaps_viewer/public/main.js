@@ -275,16 +275,145 @@ js_Boot.__resolveNativeClass = function(name) {
 };
 var Data = function() { };
 Data.__name__ = "Data";
-Data.assetById = function() {
+Data.loadFromFiles = function() {
+	return null;
+};
+Data.loadFallback = function() {
 	var m = new haxe_ds_StringMap();
+	var cleaned_b = "";
 	var _g = 0;
-	var _g1 = Data.assets;
+	var _g1 = Data.groundData.split("\n");
 	while(_g < _g1.length) {
-		var a = _g1[_g];
+		var line = _g1[_g];
 		++_g;
-		m.h[a.id] = a;
+		var idx = line.indexOf("//");
+		if(idx != -1) {
+			line = HxOverrides.substr(line,0,idx);
+		}
+		cleaned_b += Std.string(line);
+		cleaned_b += "\n";
 	}
-	return m;
+	var g = JSON.parse(cleaned_b);
+	var cleaned_b = "";
+	var _g = 0;
+	var _g1 = Data.buildingPrimitiveData.split("\n");
+	while(_g < _g1.length) {
+		var line = _g1[_g];
+		++_g;
+		var idx = line.indexOf("//");
+		if(idx != -1) {
+			line = HxOverrides.substr(line,0,idx);
+		}
+		cleaned_b += Std.string(line);
+		cleaned_b += "\n";
+	}
+	var b1 = JSON.parse(cleaned_b);
+	var cleaned_b = "";
+	var _g = 0;
+	var _g1 = Data.buildingHybridData.split("\n");
+	while(_g < _g1.length) {
+		var line = _g1[_g];
+		++_g;
+		var idx = line.indexOf("//");
+		if(idx != -1) {
+			line = HxOverrides.substr(line,0,idx);
+		}
+		cleaned_b += Std.string(line);
+		cleaned_b += "\n";
+	}
+	var b2 = JSON.parse(cleaned_b);
+	var cleaned_b = "";
+	var _g = 0;
+	var _g1 = Data.facadeWindowData.split("\n");
+	while(_g < _g1.length) {
+		var line = _g1[_g];
+		++_g;
+		var idx = line.indexOf("//");
+		if(idx != -1) {
+			line = HxOverrides.substr(line,0,idx);
+		}
+		cleaned_b += Std.string(line);
+		cleaned_b += "\n";
+	}
+	var fw = JSON.parse(cleaned_b);
+	var cleaned_b = "";
+	var _g = 0;
+	var _g1 = Data.roofComplexData.split("\n");
+	while(_g < _g1.length) {
+		var line = _g1[_g];
+		++_g;
+		var idx = line.indexOf("//");
+		if(idx != -1) {
+			line = HxOverrides.substr(line,0,idx);
+		}
+		cleaned_b += Std.string(line);
+		cleaned_b += "\n";
+	}
+	var rc = JSON.parse(cleaned_b);
+	var cleaned_b = "";
+	var _g = 0;
+	var _g1 = Data.treeStylizedData.split("\n");
+	while(_g < _g1.length) {
+		var line = _g1[_g];
+		++_g;
+		var idx = line.indexOf("//");
+		if(idx != -1) {
+			line = HxOverrides.substr(line,0,idx);
+		}
+		cleaned_b += Std.string(line);
+		cleaned_b += "\n";
+	}
+	var tr = JSON.parse(cleaned_b);
+	m.h[g.id] = g;
+	m.h[b1.id] = b1;
+	m.h[b2.id] = b2;
+	m.h[fw.id] = fw;
+	m.h[rc.id] = rc;
+	m.h[tr.id] = tr;
+	var cleaned_b = "";
+	var _g = 0;
+	var _g1 = Data.materialsData.split("\n");
+	while(_g < _g1.length) {
+		var line = _g1[_g];
+		++_g;
+		var idx = line.indexOf("//");
+		if(idx != -1) {
+			line = HxOverrides.substr(line,0,idx);
+		}
+		cleaned_b += Std.string(line);
+		cleaned_b += "\n";
+	}
+	var mats = JSON.parse(cleaned_b);
+	m.h[mats.id] = mats;
+	var cleaned_b = "";
+	var _g = 0;
+	var _g1 = Data.simpleLitData.split("\n");
+	while(_g < _g1.length) {
+		var line = _g1[_g];
+		++_g;
+		var idx = line.indexOf("//");
+		if(idx != -1) {
+			line = HxOverrides.substr(line,0,idx);
+		}
+		cleaned_b += Std.string(line);
+		cleaned_b += "\n";
+	}
+	var shader = JSON.parse(cleaned_b);
+	m.h[shader.id] = shader;
+	var cleaned_b = "";
+	var _g = 0;
+	var _g1 = Data.sceneData.split("\n");
+	while(_g < _g1.length) {
+		var line = _g1[_g];
+		++_g;
+		var idx = line.indexOf("//");
+		if(idx != -1) {
+			line = HxOverrides.substr(line,0,idx);
+		}
+		cleaned_b += Std.string(line);
+		cleaned_b += "\n";
+	}
+	return { scene : JSON.parse(cleaned_b), assets : m, materials : mats, shaderSimpleLit : shader};
 };
 Data.parse = function(raw) {
 	var cleaned_b = "";
@@ -562,8 +691,25 @@ hxd_App.prototype = {
 	,__class__: hxd_App
 };
 var Main = function() {
-	this.distance = 42.0;
-	this.pitch = 0.35;
+	this.panStep = 15.0;
+	this.zoomStep = 2.0;
+	this.dragSpeed = 0.002;
+	this.dragging = false;
+	var x = 0;
+	var y = 3;
+	var z = 0;
+	if(z == null) {
+		z = 0.;
+	}
+	if(y == null) {
+		y = 0.;
+	}
+	if(x == null) {
+		x = 0.;
+	}
+	this.target = new h3d_VectorImpl(x,y,z);
+	this.distance = 55.0;
+	this.pitch = Math.PI / 4;
 	this.yaw = Math.PI / 4;
 	hxd_App.call(this);
 };
@@ -587,7 +733,7 @@ Main.prototype = $extend(hxd_App.prototype,{
 			x = 0.;
 		}
 		new h3d_scene_fwd_DirLight(new h3d_VectorImpl(x,y,z),this.s3d);
-		this.assets = Data.assetById();
+		this.assets = Data.assets;
 		this.materials = this.buildMaterialMap();
 		var _g = 0;
 		var _g1 = Data.scene.nodes;
@@ -596,37 +742,143 @@ Main.prototype = $extend(hxd_App.prototype,{
 			++_g;
 			this.addNode(node,this.s3d);
 		}
+		this.setupInput();
 		this.updateCamera();
 	}
 	,update: function(dt) {
 		var rotSpeed = 0.9 * dt;
 		var zoomSpeed = 30 * dt;
-		if(hxd_Key.isDown(37)) {
+		if(hxd_Key.isDown(37) || hxd_Key.isDown(65)) {
 			this.yaw -= rotSpeed;
 		}
-		if(hxd_Key.isDown(39)) {
+		if(hxd_Key.isDown(39) || hxd_Key.isDown(68)) {
 			this.yaw += rotSpeed;
 		}
-		if(hxd_Key.isDown(38)) {
+		if(hxd_Key.isDown(38) || hxd_Key.isDown(69)) {
 			this.pitch = Math.min(1.2,this.pitch + rotSpeed);
 		}
-		if(hxd_Key.isDown(40)) {
+		if(hxd_Key.isDown(40) || hxd_Key.isDown(81)) {
 			this.pitch = Math.max(0.05,this.pitch - rotSpeed);
 		}
 		if(hxd_Key.isDown(87)) {
 			this.distance = Math.max(12,this.distance - zoomSpeed);
 		}
 		if(hxd_Key.isDown(83)) {
-			this.distance = Math.min(80,this.distance + zoomSpeed);
+			this.distance = Math.min(120,this.distance + zoomSpeed);
+		}
+		if(hxd_Key.isDown(90)) {
+			this.target.y = Math.max(0,this.target.y - this.panStep * dt);
+		}
+		if(hxd_Key.isDown(88)) {
+			this.target.y = Math.min(15,this.target.y + this.panStep * dt);
+		}
+		if(hxd_Key.isDown(16)) {
+			var x = Math.cos(this.yaw);
+			var y = 0;
+			var z = Math.sin(this.yaw);
+			if(z == null) {
+				z = 0.;
+			}
+			if(y == null) {
+				y = 0.;
+			}
+			if(x == null) {
+				x = 0.;
+			}
+			var x1 = x;
+			var y1 = y;
+			var z1 = z;
+			if(z1 == null) {
+				z1 = 0.;
+			}
+			if(y1 == null) {
+				y1 = 0.;
+			}
+			if(x1 == null) {
+				x1 = 0.;
+			}
+			var forward_x = x1;
+			var forward_y = y1;
+			var forward_z = z1;
+			var x = -forward_z;
+			var y = 0;
+			var z = forward_x;
+			if(z == null) {
+				z = 0.;
+			}
+			if(y == null) {
+				y = 0.;
+			}
+			if(x == null) {
+				x = 0.;
+			}
+			var x1 = x;
+			var y1 = y;
+			var z1 = z;
+			if(z1 == null) {
+				z1 = 0.;
+			}
+			if(y1 == null) {
+				y1 = 0.;
+			}
+			if(x1 == null) {
+				x1 = 0.;
+			}
+			var right_x = x1;
+			var right_y = y1;
+			var right_z = z1;
+			if(hxd_Key.isDown(87)) {
+				this.target.x += forward_x * this.panStep * dt;
+				this.target.z += forward_z * this.panStep * dt;
+			}
+			if(hxd_Key.isDown(83)) {
+				this.target.x -= forward_x * this.panStep * dt;
+				this.target.z -= forward_z * this.panStep * dt;
+			}
+			if(hxd_Key.isDown(65)) {
+				this.target.x -= right_x * this.panStep * dt;
+				this.target.z -= right_z * this.panStep * dt;
+			}
+			if(hxd_Key.isDown(68)) {
+				this.target.x += right_x * this.panStep * dt;
+				this.target.z += right_z * this.panStep * dt;
+			}
 		}
 		this.updateCamera();
+	}
+	,setupInput: function() {
+		hxd_Window.getInstance().addEventTarget($bind(this,this.handleEvent));
+	}
+	,handleEvent: function(e) {
+		switch(e.kind._hx_index) {
+		case 0:
+			if(e.button == 0) {
+				this.dragging = true;
+			}
+			break;
+		case 1:
+			if(e.button == 0) {
+				this.dragging = false;
+			}
+			break;
+		case 2:
+			if(this.dragging) {
+				this.yaw += e.relX * this.dragSpeed;
+				this.pitch = Math.min(1.2,Math.max(0.1,this.pitch + e.relY * this.dragSpeed));
+			}
+			break;
+		case 5:
+			this.distance = Math.max(12,Math.min(120,this.distance - e.wheelDelta * this.zoomStep));
+			break;
+		default:
+		}
 	}
 	,updateCamera: function() {
 		var cam = this.s3d.camera;
 		var cosPitch = Math.cos(this.pitch);
-		var x = Math.cos(this.yaw) * this.distance * cosPitch;
-		var z = Math.sin(this.yaw) * this.distance * cosPitch;
-		var y = Math.sin(this.pitch) * this.distance + 6;
+		var x = this.target.x + Math.cos(this.yaw) * this.distance * cosPitch;
+		var z = this.target.z + Math.sin(this.yaw) * this.distance * cosPitch;
+		var y = this.target.y + Math.sin(this.pitch) * this.distance + 3;
 		var _this = cam.pos;
 		var x1 = x;
 		var y1 = y;
@@ -644,8 +896,24 @@ Main.prototype = $extend(hxd_App.prototype,{
 		_this.y = y1;
 		_this.z = z1;
 		var _this = cam.target;
+		var x = this.target.x;
+		var y = this.target.y;
+		var z = this.target.z;
+		if(z == null) {
+			z = 0.;
+		}
+		if(y == null) {
+			y = 0.;
+		}
+		if(x == null) {
+			x = 0.;
+		}
+		_this.x = x;
+		_this.y = y;
+		_this.z = z;
+		var _this = cam.up;
 		var x = 0;
-		var y = 3;
+		var y = 1;
 		var z = 0;
 		if(z == null) {
 			z = 0.;
@@ -704,16 +972,16 @@ Main.prototype = $extend(hxd_App.prototype,{
 			prim = new h3d_prim_Cube();
 			break;
 		case "cone":
-			prim = new h3d_prim_Cylinder(24,1,1,true);
+			prim = new h3d_prim_Cylinder(64,1,1,true);
 			break;
 		case "cylinder":
-			prim = new h3d_prim_Cylinder(24,1,1,true);
+			prim = new h3d_prim_Cylinder(64,1,1,true);
 			break;
 		case "pyramid":
 			prim = new h3d_prim_Cube();
 			break;
 		case "sphere":
-			prim = new h3d_prim_Sphere();
+			prim = new h3d_prim_Sphere(1,64,64);
 			break;
 		default:
 			prim = new h3d_prim_Cube();
@@ -96730,187 +96998,6 @@ haxe_MainLoop.add(hxd_System.updateCursor,-1);
 if(ArrayBuffer.prototype.slice == null) {
 	ArrayBuffer.prototype.slice = js_lib__$ArrayBuffer_ArrayBufferCompat.sliceImpl;
 }
-Data.scene = (function($this) {
-	var $r;
-	var cleaned_b = "";
-	{
-		var _g = 0;
-		var _g1 = Data.sceneData.split("\n");
-		while(_g < _g1.length) {
-			var line = _g1[_g];
-			++_g;
-			var idx = line.indexOf("//");
-			if(idx != -1) {
-				line = HxOverrides.substr(line,0,idx);
-			}
-			cleaned_b += Std.string(line);
-			cleaned_b += "\n";
-		}
-	}
-	$r = JSON.parse(cleaned_b);
-	return $r;
-}(this));
-Data.ground = (function($this) {
-	var $r;
-	var cleaned_b = "";
-	{
-		var _g = 0;
-		var _g1 = Data.groundData.split("\n");
-		while(_g < _g1.length) {
-			var line = _g1[_g];
-			++_g;
-			var idx = line.indexOf("//");
-			if(idx != -1) {
-				line = HxOverrides.substr(line,0,idx);
-			}
-			cleaned_b += Std.string(line);
-			cleaned_b += "\n";
-		}
-	}
-	$r = JSON.parse(cleaned_b);
-	return $r;
-}(this));
-Data.buildingPrimitive = (function($this) {
-	var $r;
-	var cleaned_b = "";
-	{
-		var _g = 0;
-		var _g1 = Data.buildingPrimitiveData.split("\n");
-		while(_g < _g1.length) {
-			var line = _g1[_g];
-			++_g;
-			var idx = line.indexOf("//");
-			if(idx != -1) {
-				line = HxOverrides.substr(line,0,idx);
-			}
-			cleaned_b += Std.string(line);
-			cleaned_b += "\n";
-		}
-	}
-	$r = JSON.parse(cleaned_b);
-	return $r;
-}(this));
-Data.buildingHybrid = (function($this) {
-	var $r;
-	var cleaned_b = "";
-	{
-		var _g = 0;
-		var _g1 = Data.buildingHybridData.split("\n");
-		while(_g < _g1.length) {
-			var line = _g1[_g];
-			++_g;
-			var idx = line.indexOf("//");
-			if(idx != -1) {
-				line = HxOverrides.substr(line,0,idx);
-			}
-			cleaned_b += Std.string(line);
-			cleaned_b += "\n";
-		}
-	}
-	$r = JSON.parse(cleaned_b);
-	return $r;
-}(this));
-Data.facadeWindow = (function($this) {
-	var $r;
-	var cleaned_b = "";
-	{
-		var _g = 0;
-		var _g1 = Data.facadeWindowData.split("\n");
-		while(_g < _g1.length) {
-			var line = _g1[_g];
-			++_g;
-			var idx = line.indexOf("//");
-			if(idx != -1) {
-				line = HxOverrides.substr(line,0,idx);
-			}
-			cleaned_b += Std.string(line);
-			cleaned_b += "\n";
-		}
-	}
-	$r = JSON.parse(cleaned_b);
-	return $r;
-}(this));
-Data.roofComplex = (function($this) {
-	var $r;
-	var cleaned_b = "";
-	{
-		var _g = 0;
-		var _g1 = Data.roofComplexData.split("\n");
-		while(_g < _g1.length) {
-			var line = _g1[_g];
-			++_g;
-			var idx = line.indexOf("//");
-			if(idx != -1) {
-				line = HxOverrides.substr(line,0,idx);
-			}
-			cleaned_b += Std.string(line);
-			cleaned_b += "\n";
-		}
-	}
-	$r = JSON.parse(cleaned_b);
-	return $r;
-}(this));
-Data.treeStylized = (function($this) {
-	var $r;
-	var cleaned_b = "";
-	{
-		var _g = 0;
-		var _g1 = Data.treeStylizedData.split("\n");
-		while(_g < _g1.length) {
-			var line = _g1[_g];
-			++_g;
-			var idx = line.indexOf("//");
-			if(idx != -1) {
-				line = HxOverrides.substr(line,0,idx);
-			}
-			cleaned_b += Std.string(line);
-			cleaned_b += "\n";
-		}
-	}
-	$r = JSON.parse(cleaned_b);
-	return $r;
-}(this));
-Data.materials = (function($this) {
-	var $r;
-	var cleaned_b = "";
-	{
-		var _g = 0;
-		var _g1 = Data.materialsData.split("\n");
-		while(_g < _g1.length) {
-			var line = _g1[_g];
-			++_g;
-			var idx = line.indexOf("//");
-			if(idx != -1) {
-				line = HxOverrides.substr(line,0,idx);
-			}
-			cleaned_b += Std.string(line);
-			cleaned_b += "\n";
-		}
-	}
-	$r = JSON.parse(cleaned_b);
-	return $r;
-}(this));
-Data.shaderSimpleLit = (function($this) {
-	var $r;
-	var cleaned_b = "";
-	{
-		var _g = 0;
-		var _g1 = Data.simpleLitData.split("\n");
-		while(_g < _g1.length) {
-			var line = _g1[_g];
-			++_g;
-			var idx = line.indexOf("//");
-			if(idx != -1) {
-				line = HxOverrides.substr(line,0,idx);
-			}
-			cleaned_b += Std.string(line);
-			cleaned_b += "\n";
-		}
-	}
-	$r = JSON.parse(cleaned_b);
-	return $r;
-}(this));
-Data.assets = [Data.ground,Data.buildingPrimitive,Data.buildingHybrid,Data.facadeWindow,Data.roofComplex,Data.treeStylized];
 Data.sceneData = "\n    {\n      \"id\": \"town_scene\",\n      \"type\": \"jdw.scene\",\n      \"nodes\": [\n        { \"id\": \"ground_disk\", \"asset\": \"ground\", \"pos\": [0, 0, 0] },\n        {\n          \"id\": \"buildings\",\n          \"nodes\": [\n            { \"id\": \"house_a\", \"asset\": \"building_primitive\", \"pos\": [-5, 0, -5] },\n            { \"id\": \"house_b\", \"asset\": \"building_hybrid\", \"pos\": [5, 0, -2], \"rot\": [0, 45, 0] }\n          ]\n        },\n        {\n          \"id\": \"nature\",\n          \"nodes\": [\n            { \"id\": \"tree_1\", \"asset\": \"tree_stylized\", \"pos\": [8, 0, 8] },\n            { \"id\": \"tree_2\", \"asset\": \"tree_stylized\", \"pos\": [-10, 0, 4], \"scale\": 1.2 }\n          ]\n        }\n      ]\n    }";
 Data.groundData = "\n    {\n      \"id\": \"ground\",\n      \"type\": \"jda.asset\",\n      \"kind\": \"sdf_primitive\",\n      \"data\": {\n        \"primitive_type\": \"cylinder\",\n        \"height\": 0.2,\n        \"radius\": 30,\n        \"material\": \"mat_grass_green\"\n      }\n    }";
 Data.buildingPrimitiveData = "\n    {\n      \"id\": \"building_primitive\",\n      \"type\": \"jda.asset\",\n      \"kind\": \"sdf_csg_tree\",\n      \"data\": {\n        \"op\": \"union\",\n        \"children\": [\n          {\n            \"id\": \"body\",\n            \"kind\": \"sdf_primitive\",\n            \"data\": {\n              \"primitive_type\": \"box\",\n              \"size\": [5, 5, 5],\n              \"material\": \"mat_wood_light\"\n            }\n          },\n          {\n            \"id\": \"roof\",\n            \"kind\": \"sdf_primitive\",\n            \"data\": {\n              \"primitive_type\": \"pyramid\",\n              \"size\": [6, 3, 6],\n              \"material\": \"mat_roof_red\"\n            },\n            \"pos\": [0, 5, 0]\n          }\n        ]\n      }\n    }";
@@ -96920,6 +97007,16 @@ Data.roofComplexData = "\n    {\n      \"id\": \"roof_complex\",\n      \"type\"
 Data.treeStylizedData = "\n    {\n      \"id\": \"tree_stylized\",\n      \"type\": \"jda.asset\",\n      \"kind\": \"sdf_csg_tree\",\n      \"data\": {\n        \"op\": \"union\",\n        \"children\": [\n          { \"id\": \"trunk\", \"kind\": \"sdf_primitive\", \"data\": { \"primitive_type\": \"cylinder\", \"height\": 6, \"radius\": 0.8, \"material\": \"mat_wood_dark\" } },\n          { \"id\": \"foliage\", \"kind\": \"sdf_primitive\", \"data\": { \"primitive_type\": \"sphere\", \"radius\": 3, \"material\": \"mat_leaf_green\" }, \"pos\": [0, 6, 0] }\n        ]\n      }\n    }";
 Data.materialsData = "\n    {\n      \"id\": \"materials_town\",\n      \"type\": \"jda.asset\",\n      \"kind\": \"material_list\",\n      \"data\": [\n        { \"id\": \"mat_grass_green\", \"color\": [0.2, 0.6, 0.2] },\n        { \"id\": \"mat_wood_light\", \"shader\": \"simple_lit_shader\", \"parameters\": { \"baseColor\": [0.8, 0.7, 0.5] } },\n        { \"id\": \"mat_roof_red\", \"color\": [0.7, 0.2, 0.2] },\n        { \"id\": \"mat_leaf_green\", \"color\": [0.1, 0.5, 0.1] },\n        { \"id\": \"mat_wall_beige\", \"color\": [0.9, 0.85, 0.7] },\n        { \"id\": \"mat_wood_dark\", \"color\": [0.4, 0.2, 0.1] },\n        { \"id\": \"mat_roof_dark\", \"color\": [0.3, 0.1, 0.1] }\n      ]\n    }";
 Data.simpleLitData = "\n    {\n      \"id\": \"simple_lit_shader\",\n      \"type\": \"jda.asset\",\n      \"kind\": \"axsl_shader\",\n      \"data\": {\n        \"parameters\": [\n          { \"name\": \"baseColor\", \"type\": \"vec3\" }\n        ],\n        \"code\": {\n          \"fragment_shader\": [\n            \"vec3 lightDirection = normalize(vec3(0.5, 1.0, 0.75));\",\n            \"float ambient = 0.2;\",\n            \"float diffuse = max(0.0, dot(surface_normal, lightDirection));\",\n            \"vec3 finalColor = baseColor * (ambient + diffuse);\",\n            \"return vec4(finalColor, 1.0);\"\n          ]\n        }\n      }\n    }";
+Data.loaded = (function($this) {
+	var $r;
+	var fromFiles = Data.loadFromFiles();
+	$r = fromFiles != null ? fromFiles : Data.loadFallback();
+	return $r;
+}(this));
+Data.scene = Data.loaded.scene;
+Data.assets = Data.loaded.assets;
+Data.materials = Data.loaded.materials;
+Data.shaderSimpleLit = Data.loaded.shaderSimpleLit;
 format_gif_Tools.LN2 = Math.log(2);
 format_mp3_MPEG.V1 = 3;
 format_mp3_MPEG.V2 = 2;
