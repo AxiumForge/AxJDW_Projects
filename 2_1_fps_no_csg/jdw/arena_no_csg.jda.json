@@ -1,0 +1,46 @@
+{
+  "id": "fps_arena_geometry_no_csg",
+  "type": "jda.asset",
+  "kind": "sdf_library",
+  "data": {
+    "arena_ground": {
+      "kind": "sdf_primitive",
+      "data": { "primitive_type": "box", "size": [50, 0.5, 50], "material": "mat_ground_grey" },
+      "pos": [0, -0.25, 0]
+    },
+    "arena_walls": {
+      "kind": "sdf_group",
+      "children": [
+        { "kind": "sdf_primitive", "data": { "primitive_type": "box", "size": [50, 5, 1], "material": "mat_wall_blue" }, "pos": [0, 2.5, 24.5] },
+        { "kind": "sdf_primitive", "data": { "primitive_type": "box", "size": [50, 5, 1], "material": "mat_wall_blue" }, "pos": [0, 2.5, -24.5] },
+        { "kind": "sdf_primitive", "data": { "primitive_type": "box", "size": [1, 5, 50], "material": "mat_wall_blue" }, "pos": [24.5, 2.5, 0] },
+        { "kind": "sdf_primitive", "data": { "primitive_type": "box", "size": [1, 5, 50], "material": "mat_wall_blue" }, "pos": [-24.5, 2.5, 0] }
+      ]
+    },
+    "arena_building": {
+      "kind": "sdf_group",
+      "children": [
+        { "kind": "sdf_primitive", "data": { "primitive_type": "box", "size": [20, 4, 15], "material": "mat_wall_blue" } },
+        { "kind": "sdf_primitive", "data": { "primitive_type": "box", "size": [18, 3.5, 3], "material": "mat_wall_blue" }, "pos": [0, 0, 0] },
+        { "kind": "sdf_primitive", "data": { "primitive_type": "box", "size": [6, 3.5, 10], "material": "mat_wall_blue" }, "pos": [5, 0, -2] },
+        { "kind": "sdf_primitive", "data": { "primitive_type": "box", "size": [6, 3.5, 10], "material": "mat_wall_blue" }, "pos": [-5, 0, 2] }
+      ]
+    },
+    "arena_ramp": {
+      "kind": "sdf_primitive",
+      "data": { "primitive_type": "box", "size": [4, 0.2, 12], "material": "mat_ground_grey" }
+    },
+    "arena_platform": {
+      "kind": "sdf_primitive",
+      "data": { "primitive_type": "box", "size": [8, 0.5, 8], "material": "mat_ground_grey" }
+    },
+    "arena_obstacle_box": {
+      "kind": "sdf_primitive",
+      "data": { "primitive_type": "box", "size": [4, 2, 4], "material": "mat_obstacle_red" }
+    },
+    "arena_obstacle_cylinder": {
+      "kind": "sdf_primitive",
+      "data": { "primitive_type": "cylinder", "height": 3, "radius": 2, "material": "mat_obstacle_red" }
+    }
+  }
+}

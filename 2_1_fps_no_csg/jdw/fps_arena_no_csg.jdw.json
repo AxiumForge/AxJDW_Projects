@@ -1,0 +1,13 @@
+{
+  "id": "fps_arena_no_csg_scene",
+  "type": "jdw.scene",
+  "nodes": [
+    { "id": "ground", "asset": "arena_ground", "pos": [0, 0, 0] },
+    { "id": "walls", "asset": "arena_walls", "pos": [0, 0, 0] },
+    { "id": "building", "asset": "arena_building", "pos": [0, 2, 0] },
+    { "id": "ramp", "asset": "arena_ramp", "pos": [15, 1.5, -15], "rot": [20, 0, 0] },
+    { "id": "platform", "asset": "arena_platform", "pos": [15, 4, -8] },
+    { "id": "obstacle_box_1", "asset": "arena_obstacle_box", "pos": [-15, 1, 15] },
+    { "id": "obstacle_cylinder_1", "asset": "arena_obstacle_cylinder", "pos": [15, 1.5, 15] }
+  ]
+}

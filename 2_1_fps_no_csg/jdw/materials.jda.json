@@ -1,0 +1,10 @@
+{
+  "id": "materials_fps_no_csg",
+  "type": "jda.asset",
+  "kind": "material_list",
+  "data": [
+    { "id": "mat_ground_grey", "shader": "simple_lit_shader", "parameters": { "baseColor": [0.3, 0.3, 0.3] } },
+    { "id": "mat_wall_blue", "shader": "simple_lit_shader", "parameters": { "baseColor": [0.1, 0.1, 0.6] } },
+    { "id": "mat_obstacle_red", "shader": "simple_lit_shader", "parameters": { "baseColor": [0.7, 0.1, 0.1] } }
+  ]
+}

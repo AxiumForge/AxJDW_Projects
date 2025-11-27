@@ -1,0 +1,5 @@
+-cp src
+-lib heaps
+-main Main
+-js public/main.js
+-D js-classic

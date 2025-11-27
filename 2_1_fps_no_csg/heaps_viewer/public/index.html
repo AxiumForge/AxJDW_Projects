@@ -1,0 +1,24 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>FPS Arena (No CSG) Viewer</title>
+  <style>
+    html, body { margin: 0; padding: 0; width: 100%; height: 100%; background: #0b0e17; color: #d8e1ff; font-family: sans-serif; }
+    #webgl { width: 100%; height: 100%; display: block; }
+    .overlay {
+      position: absolute; top: 12px; left: 12px; background: rgba(16, 22, 33, 0.8); padding: 10px 12px;
+      border: 1px solid rgba(255, 255, 255, 0.12); border-radius: 6px; font-size: 14px;
+    }
+  </style>
+</head>
+<body>
+  <canvas id="webgl"></canvas>
+  <div class="overlay">
+    <div><strong>FPS Arena (No CSG)</strong></div>
+    <div>Orbit: drag, A/D yaw, Q/E pitch, W/S zoom</div>
+    <div>FPS toggle: F. Move: WASD. Look: Q/E. Vert: Z/X.</div>
+  </div>
+  <script src="main.js"></script>
+</body>
+</html>
