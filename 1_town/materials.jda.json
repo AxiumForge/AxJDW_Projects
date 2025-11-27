@@ -1,0 +1,38 @@
+{
+  "id": "materials_town",
+  "type": "jda.asset",
+  "kind": "material_list",
+  "data": [
+    {
+      "id": "mat_grass_green",
+      "color": [0.2, 0.6, 0.2]
+    },
+    {
+      "id": "mat_wood_light",
+      "shader": "simple_lit_shader",
+      "parameters": {
+        "baseColor": [0.8, 0.7, 0.5]
+      }
+    },
+    {
+      "id": "mat_roof_red",
+      "color": [0.7, 0.2, 0.2]
+    },
+    {
+      "id": "mat_leaf_green",
+      "color": [0.1, 0.5, 0.1]
+    },
+    {
+      "id": "mat_wall_beige",
+      "color": [0.9, 0.85, 0.7]
+    },
+    {
+      "id": "mat_wood_dark",
+      "color": [0.4, 0.2, 0.1]
+    },
+    {
+      "id": "mat_roof_dark",
+      "color": [0.3, 0.1, 0.1]
+    }
+  ]
+}

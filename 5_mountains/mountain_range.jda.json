@@ -1,0 +1,64 @@
+{
+  "id": "mountain_range_asset",
+  "type": "jda.asset",
+  "kind": "sdf_csg_tree",
+  "data": {
+    "op": "union",
+    "children": [
+      {
+        "id": "carved_terrain",
+        "kind": "sdf_csg_tree",
+        "data": {
+          "op": "subtract",
+          "children": [
+            {
+              "id": "base_terrain",
+              "kind": "sdf_csg_tree",
+              "data": {
+                "op": "union",
+                "children": [
+                  {
+                    "id": "ground_plane",
+                    "kind": "sdf_primitive",
+                    "data": { "primitive_type": "box", "size": [500, 10, 500], "material": "mat_dirt_brown" },
+                    "pos": [0, -5, 0]
+                  },
+                  {
+                    "id": "main_peak",
+                    "kind": "sdf_primitive",
+                    "data": { "primitive_type": "pyramid", "size": [100, 200, 100], "material": "mat_rock_grey" },
+                    "pos": [0, 5, 0]
+                  }
+                ]
+              }
+            },
+            {
+              "id": "river_path_carver",
+              "kind": "sdf_csg_tree",
+              "data": {
+                "op": "union",
+                "children": [
+                  { "id": "river_segment_1_carver", "kind": "sdf_primitive", "data": { "primitive_type": "box", "size": [20, 15, 300] }, "pos": [100, 0, -150] },
+                  { "id": "river_segment_2_carver", "kind": "sdf_primitive", "data": { "primitive_type": "box", "size": [20, 15, 200] }, "pos": [150, 0, 0], "rot": [0, -45, 0] },
+                  { "id": "river_segment_3_carver", "kind": "sdf_primitive", "data": { "primitive_type": "box", "size": [20, 15, 300] }, "pos": [100, 0, 150], "rot": [0, -90, 0] }
+                ]
+              }
+            }
+          ]
+        }
+      },
+      {
+        "id": "water_surface",
+        "kind": "sdf_csg_tree",
+        "data": {
+          "op": "union",
+          "children": [
+            { "id": "river_segment_1_water", "kind": "sdf_primitive", "data": { "primitive_type": "box", "size": [18, 1, 300], "material": "mat_water" }, "pos": [100, -1, -150] },
+            { "id": "river_segment_2_water", "kind": "sdf_primitive", "data": { "primitive_type": "box", "size": [18, 1, 200], "material": "mat_water" }, "pos": [150, -1, 0], "rot": [0, -45, 0] },
+            { "id": "river_segment_3_water", "kind": "sdf_primitive", "data": { "primitive_type": "box", "size": [18, 1, 300], "material": "mat_water" }, "pos": [100, -1, 150], "rot": [0, -90, 0] }
+          ]
+        }
+      }
+    ]
+  }
+}

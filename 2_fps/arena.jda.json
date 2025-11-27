@@ -1,0 +1,81 @@
+{
+  "id": "fps_arena_geometry",
+  "type": "jda.asset",
+  "kind": "sdf_csg_tree",
+  "data": {
+    "op": "union",
+    "children": [
+      {
+        "id": "ground_plane",
+        "kind": "sdf_primitive",
+        "data": { "primitive_type": "box", "size": [50, 0.5, 50], "material": "mat_ground_grey" },
+        "pos": [0, -0.25, 0]
+      },
+      {
+        "id": "outer_walls",
+        "kind": "sdf_csg_tree",
+        "data": {
+          "op": "union",
+          "children": [
+            { "id": "wall_north", "kind": "sdf_primitive", "data": { "primitive_type": "box", "size": [50, 5, 1], "material": "mat_wall_blue" }, "pos": [0, 2.5, 24.5] },
+            { "id": "wall_south", "kind": "sdf_primitive", "data": { "primitive_type": "box", "size": [50, 5, 1], "material": "mat_wall_blue" }, "pos": [0, 2.5, -24.5] },
+            { "id": "wall_east", "kind": "sdf_primitive", "data": { "primitive_type": "box", "size": [1, 5, 50], "material": "mat_wall_blue" }, "pos": [24.5, 2.5, 0] },
+            { "id": "wall_west", "kind": "sdf_primitive", "data": { "primitive_type": "box", "size": [1, 5, 50], "material": "mat_wall_blue" }, "pos": [-24.5, 2.5, 0] }
+          ]
+        }
+      },
+      {
+        "id": "central_building",
+        "kind": "sdf_csg_tree",
+        "data": {
+          "op": "subtract",
+          "children": [
+            { 
+              "id": "building_main_block",
+              "kind": "sdf_primitive",
+              "data": { "primitive_type": "box", "size": [20, 4, 15], "material": "mat_wall_blue" }
+            },
+            {
+              "id": "interior_spaces",
+              "kind": "sdf_csg_tree",
+              "data": {
+                "op": "union",
+                "children": [
+                  { "id": "main_corridor", "kind": "sdf_primitive", "data": { "primitive_type": "box", "size": [18, 3.5, 3] }, "pos": [0, 0, 0] },
+                  { "id": "room_1", "kind": "sdf_primitive", "data": { "primitive_type": "box", "size": [6, 3.5, 10] }, "pos": [5, 0, -2] },
+                  { "id": "room_2", "kind": "sdf_primitive", "data": { "primitive_type": "box", "size": [6, 3.5, 10] }, "pos": [-5, 0, 2] }
+                ]
+              }
+            }
+          ]
+        },
+        "pos": [0, 2, 0]
+      },
+      {
+        "id": "ramp_to_platform",
+        "kind": "sdf_primitive",
+        "data": { "primitive_type": "box", "size": [4, 0.2, 12], "material": "mat_ground_grey" },
+        "pos": [15, 1.5, -15],
+        "rot": [20, 0, 0]
+      },
+      {
+        "id": "high_platform",
+        "kind": "sdf_primitive",
+        "data": { "primitive_type": "box", "size": [8, 0.5, 8], "material": "mat_ground_grey" },
+        "pos": [15, 4, -8]
+      },
+      {
+        "id": "obstacle_box_1",
+        "kind": "sdf_primitive",
+        "data": { "primitive_type": "box", "size": [4, 2, 4], "material": "mat_obstacle_red" },
+        "pos": [-15, 1, 15]
+      },
+      {
+        "id": "obstacle_cylinder_1",
+        "kind": "sdf_primitive",
+        "data": { "primitive_type": "cylinder", "height": 3, "radius": 2, "material": "mat_obstacle_red" },
+        "pos": [15, 1.5, 15]
+      }
+    ]
+  }
+}

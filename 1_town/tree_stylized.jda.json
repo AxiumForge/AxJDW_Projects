@@ -1,0 +1,30 @@
+{
+  "id": "tree_stylized",
+  "type": "jda.asset",
+  "kind": "sdf_csg_tree",
+  "data": {
+    "op": "union",
+    "children": [
+      {
+        "id": "trunk",
+        "kind": "sdf_primitive",
+        "data": {
+          "primitive_type": "cylinder",
+          "height": 6,
+          "radius": 0.8,
+          "material": "mat_wood_dark"
+        }
+      },
+      {
+        "id": "foliage",
+        "kind": "sdf_primitive",
+        "data": {
+          "primitive_type": "sphere",
+          "radius": 3,
+          "material": "mat_leaf_green"
+        },
+        "pos": [0, 6, 0]
+      }
+    ]
+  }
+}

@@ -1,0 +1,36 @@
+{
+  "id": "tree_variant_definitions",
+  "type": "jda.asset",
+  "kind": "sdf_library",
+  "data": {
+    "tree_summer": {
+      "op": "union",
+      "children": [
+        { "kind": "sdf_primitive", "data": { "primitive_type": "cylinder", "height": 6, "radius": 0.8, "material": "mat_trunk_brown" } },
+        { "kind": "sdf_primitive", "data": { "primitive_type": "sphere", "radius": 3, "material": "mat_leaves_summer" }, "pos": [0, 6, 0] }
+      ]
+    },
+    "tree_autumn": {
+      "op": "union",
+      "children": [
+        { "kind": "sdf_primitive", "data": { "primitive_type": "cylinder", "height": 6, "radius": 0.8, "material": "mat_trunk_brown" } },
+        { "kind": "sdf_primitive", "data": { "primitive_type": "sphere", "radius": 3, "material": "mat_leaves_autumn" }, "pos": [0, 6, 0] }
+      ]
+    },
+    "tree_winter": {
+      "op": "union",
+      "children": [
+        { "kind": "sdf_primitive", "data": { "primitive_type": "cylinder", "height": 6, "radius": 0.8, "material": "mat_trunk_brown" } },
+        { "kind": "sdf_primitive", "data": { "primitive_type": "sphere", "radius": 0.5, "material": "mat_snow_white" }, "pos": [1.5, 4, 0] },
+        { "kind": "sdf_primitive", "data": { "primitive_type": "sphere", "radius": 0.6, "material": "mat_snow_white" }, "pos": [-1, 5, 0.5] }
+      ]
+    },
+    "tree_fantasy": {
+       "op": "union",
+      "children": [
+        { "kind": "sdf_primitive", "data": { "primitive_type": "cylinder", "height": 6, "radius": 0.8, "material": "mat_trunk_brown" } },
+        { "kind": "sdf_primitive", "data": { "primitive_type": "sphere", "radius": 3, "material": "mat_fantasy_leaves_glow" }, "pos": [0, 6, 0] }
+      ]
+    }
+  }
+}

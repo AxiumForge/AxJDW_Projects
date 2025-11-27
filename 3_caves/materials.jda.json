@@ -1,0 +1,31 @@
+{
+  "id": "materials_caves",
+  "type": "jda.asset",
+  "kind": "material_list",
+  "data": [
+    {
+      "id": "mat_cave_rock",
+      "shader": "standard_lit", 
+      "parameters": {
+        "baseColor": [0.2, 0.18, 0.15]
+      }
+    },
+    {
+      "id": "mat_crystal_glow",
+      "shader": "standard_lit",
+      "parameters": {
+        "baseColor": [0.1, 0.4, 0.8],
+        "emissive": [0.4, 0.8, 1.5] 
+      }
+    },
+    {
+      "id": "mat_still_water",
+      "shader": "transparent_refractive",
+      "parameters": {
+        "baseColor": [0.3, 0.5, 0.6],
+        "opacity": 0.8,
+        "ior": 1.33 
+      }
+    }
+  ]
+}

@@ -1,0 +1,36 @@
+{
+  "id": "caves_scene",
+  "type": "jdw.scene",
+  "nodes": [
+    {
+      "id": "cave_geometry",
+      "asset": "cave_system_shape",
+      "pos": [0, 0, 0]
+    },
+    {
+      "id": "water_plane",
+      "kind": "sdf_primitive",
+      "data": {
+        "primitive_type": "box",
+        "size": [100, 0.2, 100],
+        "material": "mat_still_water"
+      },
+      "pos": [0, -12, 0]
+    },
+    {
+      "id": "crystal_placer",
+      "type": "procedural_placer",
+      "source_asset": "crystal_source_shape",
+      "placement": {
+        "method": "surface_scatter",
+        "target_surface_node": "cave_geometry",
+        "density": 0.5 
+      },
+      "randomization": {
+        "min_scale": 0.8,
+        "max_scale": 2.5,
+        "random_rotation": true
+      }
+    }
+  ]
+}

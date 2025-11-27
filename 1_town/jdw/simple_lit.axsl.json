@@ -1,0 +1,27 @@
+{
+  "id": "simple_lit_shader",
+  "type": "jda.asset",
+  "kind": "axsl_shader",
+  "data": {
+    "parameters": [
+      {
+        "name": "baseColor",
+        "type": "vec3"
+      }
+    ],
+    "code": {
+      "fragment_shader": [
+        "// A very basic Lambertian lighting shader",
+        "vec3 lightDirection = normalize(vec3(0.5, 1.0, 0.75)); // Assume a fixed light direction",
+        "float ambient = 0.2;",
+        "",
+        "// Calculate the dot product between the surface normal and light direction",
+        "float diffuse = max(0.0, dot(surface_normal, lightDirection));",
+        "",
+        "// Final color is a mix of ambient and diffuse light, multiplied by the object's base color",
+        "vec3 finalColor = baseColor * (ambient + diffuse);",
+        "return vec4(finalColor, 1.0);"
+      ]
+    }
+  }
+}

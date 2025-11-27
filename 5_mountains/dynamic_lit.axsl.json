@@ -1,0 +1,33 @@
+{
+  "id": "dynamic_lit_shader",
+  "type": "jda.asset",
+  "kind": "axsl_shader",
+  "data": {
+    "parameters": [
+      {
+        "name": "baseColor",
+        "type": "vec3"
+      },
+      {
+        "name": "time",
+        "type": "float"
+      }
+    ],
+    "code": {
+      "fragment_shader": [
+        "// Animate the light direction to simulate a day/night cycle",
+        "vec3 lightDirection = normalize(vec3(sin(time * 0.1), 0.6 + sin(time * 0.1) * 0.4, cos(time * 0.1)));",
+        "",
+        "// Make ambient light dimmer when the sun is low",
+        "float ambient = 0.05 + max(0.0, lightDirection.y) * 0.2;",
+        "",
+        "// Calculate the dot product between the surface normal and light direction",
+        "float diffuse = max(0.0, dot(surface_normal, lightDirection));",
+        "",
+        "// Final color is a mix of ambient and diffuse light, multiplied by the object's base color",
+        "vec3 finalColor = baseColor * (ambient + diffuse);",
+        "return vec4(finalColor, 1.0);"
+      ]
+    }
+  }
+}

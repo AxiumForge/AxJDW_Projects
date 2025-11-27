@@ -1,0 +1,36 @@
+{
+  "id": "materials_fps",
+  "type": "jda.asset",
+  "kind": "material_list",
+  "data": [
+    {
+      "id": "mat_ground_grey",
+      "shader": "simple_lit_shader",
+      "parameters": {
+        "baseColor": [0.3, 0.3, 0.3]
+      }
+    },
+    {
+      "id": "mat_wall_blue",
+      "shader": "simple_lit_shader",
+      "parameters": {
+        "baseColor": [0.1, 0.1, 0.6]
+      }
+    },
+    {
+      "id": "mat_obstacle_red",
+      "shader": "simple_lit_shader",
+      "parameters": {
+        "baseColor": [0.7, 0.1, 0.1]
+      }
+    },
+    {
+      "id": "mat_transparent_glass",
+      "shader": "simple_lit_shader",
+      "parameters": {
+        "baseColor": [0.8, 0.9, 1.0]
+      },
+      "opacity": 0.3
+    }
+  ]
+}

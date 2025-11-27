@@ -1,0 +1,11 @@
+{
+  "id": "fps_arena_scene",
+  "type": "jdw.scene",
+  "nodes": [
+    {
+      "id": "main_arena",
+      "asset": "fps_arena_geometry",
+      "pos": [0, 0, 0]
+    }
+  ]
+}

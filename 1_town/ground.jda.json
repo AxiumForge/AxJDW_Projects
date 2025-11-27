@@ -1,0 +1,11 @@
+{
+  "id": "ground",
+  "type": "jda.asset",
+  "kind": "sdf_primitive",
+  "data": {
+    "primitive_type": "cylinder",
+    "height": 0.2,
+    "radius": 30,
+    "material": "mat_grass_green"
+  }
+}

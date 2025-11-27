@@ -1,0 +1,59 @@
+{
+  "id": "water_flow_shader",
+  "type": "jda.asset",
+  "kind": "axsl_shader",
+  "data": {
+    "parameters": [
+      { "name": "time", "type": "float" },
+      { "name": "waterColor", "type": "vec3" },
+      { "name": "rippleSpeed", "type": "float" },
+      { "name": "rippleFrequency", "type": "float" }
+    ],
+    "code": {
+      "fragment_shader": [
+        "// Noise function to create procedural patterns",
+        "float random(vec2 st) {",
+        "    return fract(sin(dot(st.xy, vec2(12.9898, 78.233))) * 43758.5453123);",
+        "}",
+        "float noise(vec2 st) {",
+        "    vec2 i = floor(st);",
+        "    vec2 f = fract(st);",
+        "    float a = random(i);",
+        "    float b = random(i + vec2(1.0, 0.0));",
+        "    float c = random(i + vec2(0.0, 1.0));",
+        "    float d = random(i + vec2(1.0, 1.0));",
+        "    vec2 u = f * f * (3.0 - 2.0 * f);",
+        "    return mix(a, b, u.x) + (c - a) * u.y * (1.0 - u.x) + (d - b) * u.x * u.y;",
+        "}",
+        "",
+        "// Use world position and time to create moving ripples",
+        "vec2 surface_pos = world_pos.xz * rippleFrequency;",
+        "float time_factor = time * rippleSpeed;",
+        "",
+        "// Combine two layers of noise moving in different directions for a more natural look",
+        "float noise_1 = noise(surface_pos + time_factor * 0.5);",
+        "float noise_2 = noise(surface_pos - time_factor * 0.3);",
+        "float combined_noise = noise_1 * 0.6 + noise_2 * 0.4;",
+        "",
+        "// Modulate the surface normal to create the ripple effect in lighting",
+        "vec3 perturbed_normal = normalize(surface_normal + vec3(noise_1 - 0.5, 0.0, noise_2 - 0.5) * 0.2);",
+        "",
+        "// Recalculate lighting with the perturbed normal (from dynamic_lit_shader)",
+        "vec3 lightDirection = normalize(vec3(sin(time * 0.1), 0.6 + sin(time * 0.1) * 0.4, cos(time * 0.1)));",
+        "float ambient = 0.1;",
+        "float diffuse = max(0.0, dot(perturbed_normal, lightDirection));",
+        "",
+        "// Add specular highlights for a 'wet' look",
+        "vec3 viewDir = normalize(camera_pos - world_pos);",
+        "vec3 reflectDir = reflect(-lightDirection, perturbed_normal);",
+        "float spec = pow(max(dot(viewDir, reflectDir), 0.0), 32.0);",
+        "",
+        "// Combine lighting and add a touch of the noise to the color",
+        "vec3 finalColor = waterColor * (ambient + diffuse + spec) + (combined_noise * 0.1);",
+        "",
+        "// Return final color with transparency",
+        "return vec4(finalColor, 0.85);"
+      ]
+    }
+  }
+}

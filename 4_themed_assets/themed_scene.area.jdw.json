@@ -1,0 +1,29 @@
+{
+  "id": "themed_scene_example",
+  "type": "jdw.scene",
+  "scene_context": {
+    "theme": "realistic",
+    "season": "autumn"
+  },
+  "nodes": [
+    {
+      "id": "tree_1",
+      "asset_lib": "themed_asset_sets",
+      "asset_key": "generic_tree",
+      "pos": [0, 0, 0]
+    },
+    {
+      "id": "tree_2",
+      "asset_lib": "themed_asset_sets",
+      "asset_key": "generic_tree",
+      "pos": [-8, 0, 5]
+    },
+    {
+      "id": "tree_3",
+      "asset_lib": "themed_asset_sets",
+      "asset_key": "generic_tree",
+      "pos": [10, 0, -2],
+      "scale": 1.2
+    }
+  ]
+}

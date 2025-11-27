@@ -1,0 +1,27 @@
+{
+  "id": "celestial_body_models",
+  "type": "jda.asset",
+  "kind": "sdf_library",
+  "data": {
+    "sun_model": {
+      "kind": "sdf_primitive",
+      "data": { "primitive_type": "sphere", "radius": 69.6, "material": "mat_sun" }
+    },
+    "mercury_model": {
+      "kind": "sdf_primitive",
+      "data": { "primitive_type": "sphere", "radius": 0.24, "material": "mat_mercury" }
+    },
+    "venus_model": {
+      "kind": "sdf_primitive",
+      "data": { "primitive_type": "sphere", "radius": 0.6, "material": "mat_venus" }
+    },
+    "earth_model": {
+      "kind": "sdf_primitive",
+      "data": { "primitive_type": "sphere", "radius": 0.63, "material": "mat_earth" }
+    },
+    "mars_model": {
+      "kind": "sdf_primitive",
+      "data": { "primitive_type": "sphere", "radius": 0.34, "material": "mat_mars" }
+    }
+  }
+}

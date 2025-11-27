@@ -1,0 +1,39 @@
+{
+  "id": "solar_system_orbits",
+  "type": "jda.asset",
+  "kind": "animation_library",
+  "data": {
+    "mercury_orbit": {
+      "kind": "animation_parametric_orbit",
+      "orbital_period_days": 88,
+      "semi_major_axis": 57.9,
+      "eccentricity": 0.205,
+      "inclination": 7.0,
+      "initial_angle_degrees": 45
+    },
+    "venus_orbit": {
+      "kind": "animation_parametric_orbit",
+      "orbital_period_days": 225,
+      "semi_major_axis": 108.2,
+      "eccentricity": 0.007,
+      "inclination": 3.4,
+      "initial_angle_degrees": 120
+    },
+    "earth_orbit": {
+      "kind": "animation_parametric_orbit",
+      "orbital_period_days": 365,
+      "semi_major_axis": 149.6,
+      "eccentricity": 0.017,
+      "inclination": 0.0,
+      "initial_angle_degrees": 0
+    },
+    "mars_orbit": {
+      "kind": "animation_parametric_orbit",
+      "orbital_period_days": 687,
+      "semi_major_axis": 227.9,
+      "eccentricity": 0.094,
+      "inclination": 1.85,
+      "initial_angle_degrees": 210
+    }
+  }
+}

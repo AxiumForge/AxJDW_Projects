@@ -1,0 +1,46 @@
+{
+  "id": "materials_mountain",
+  "type": "jda.asset",
+  "kind": "material_list",
+  "data": [
+    {
+      "id": "mat_rock_grey",
+      "shader": "procedural_rock_shader",
+      "parameters": {
+        "color1": [0.4, 0.4, 0.45],
+        "color2": [0.3, 0.3, 0.35],
+        "noiseScale": 0.05
+      }
+    },
+    {
+      "id": "mat_snow_white",
+      "shader": "dynamic_lit_shader",
+      "parameters": {
+        "baseColor": [0.9, 0.9, 0.95]
+      }
+    },
+    {
+      "id": "mat_grass_valley",
+      "shader": "dynamic_lit_shader",
+      "parameters": {
+        "baseColor": [0.2, 0.5, 0.2]
+      }
+    },
+    {
+      "id": "mat_dirt_brown",
+      "shader": "dynamic_lit_shader",
+      "parameters": {
+        "baseColor": [0.5, 0.3, 0.2]
+      }
+    },
+    {
+      "id": "mat_water",
+      "shader": "water_flow_shader",
+      "parameters": {
+        "waterColor": [0.2, 0.3, 0.5],
+        "rippleSpeed": 1.0,
+        "rippleFrequency": 0.1
+      }
+    }
+  ]
+}

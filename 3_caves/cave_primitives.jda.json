@@ -1,0 +1,20 @@
+{
+  "id": "cave_primitives_lib",
+  "type": "jda.asset",
+  "kind": "sdf_library",
+  "data": {
+    "generic_cave_tunnel": {
+      "op": "displace",
+      "source_sdf": {
+        "kind": "sdf_primitive",
+        "data": { "primitive_type": "sphere", "radius": 15 }
+      },
+      "modifier": {
+        "kind": "procedural_noise",
+        "type": "simplex_3d",
+        "scale": 8.0,
+        "amplitude": 2.5
+      }
+    }
+  }
+}

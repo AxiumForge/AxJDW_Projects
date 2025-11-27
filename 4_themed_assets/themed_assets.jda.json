@@ -1,0 +1,45 @@
+{
+  "id": "themed_asset_sets",
+  "type": "jda.asset",
+  "kind": "jda_library",
+  "data": {
+    "generic_tree": {
+      "kind": "jda_variant_set",
+      "variants": [
+        {
+          "match": { "theme": "realistic", "season": "summer" },
+          "asset_lib": "tree_variant_definitions",
+          "asset_key": "tree_summer"
+        },
+        {
+          "match": { "theme": "realistic", "season": "autumn" },
+          "asset_lib": "tree_variant_definitions",
+          "asset_key": "tree_autumn"
+        },
+        {
+          "match": { "theme": "realistic", "season": "winter" },
+          "asset_lib": "tree_variant_definitions",
+          "asset_key": "tree_winter"
+        },
+        {
+          "match": { "theme": "fantasy" },
+          "asset_lib": "tree_variant_definitions",
+          "asset_key": "tree_fantasy"
+        }
+      ]
+    },
+    "generic_rock": {
+      "kind": "jda_variant_set",
+      "variants": [
+        {
+          "match": { "theme": "realistic", "season": "winter" },
+          "asset": "rock_snow_covered"
+        },
+        {
+          "match": {}, 
+          "asset": "rock_plain"
+        }
+      ]
+    }
+  }
+}

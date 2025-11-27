@@ -1,0 +1,57 @@
+{
+  "id": "solar_system_scene",
+  "type": "jdw.scene",
+  "scene_context": {
+    "time_control": {
+      "time_unit": "day",
+      "seconds_per_unit": 60 
+    }
+  },
+  "nodes": [
+    {
+      "id": "sun",
+      "asset_lib": "celestial_body_models",
+      "asset_key": "sun_model"
+    },
+    {
+      "id": "mercury",
+      "asset_lib": "celestial_body_models",
+      "asset_key": "mercury_model",
+      "animation": {
+        "source_lib": "solar_system_orbits",
+        "animation_key": "mercury_orbit",
+        "autoplay": true
+      }
+    },
+    {
+      "id": "venus",
+      "asset_lib": "celestial_body_models",
+      "asset_key": "venus_model",
+      "animation": {
+        "source_lib": "solar_system_orbits",
+        "animation_key": "venus_orbit",
+        "autoplay": true
+      }
+    },
+    {
+      "id": "earth",
+      "asset_lib": "celestial_body_models",
+      "asset_key": "earth_model",
+      "animation": {
+        "source_lib": "solar_system_orbits",
+        "animation_key": "earth_orbit",
+        "autoplay": true
+      }
+    },
+    {
+      "id": "mars",
+      "asset_lib": "celestial_body_models",
+      "asset_key": "mars_model",
+      "animation": {
+        "source_lib": "solar_system_orbits",
+        "animation_key": "mars_orbit",
+        "autoplay": true
+      }
+    }
+  ]
+}

@@ -1,0 +1,25 @@
+{
+  "id": "town_scene",
+  "type": "jdw.scene",
+  "nodes": [
+    {
+      "id": "ground_disk",
+      "asset": "ground",
+      "pos": [0, 0, 0]
+    },
+    {
+      "id": "buildings",
+      "nodes": [
+        { "id": "house_a", "asset": "building_primitive", "pos": [-5, 0, -5] },
+        { "id": "house_b", "asset": "building_hybrid", "pos": [5, 0, -2], "rot": [0, 45, 0] }
+      ]
+    },
+    {
+      "id": "nature",
+      "nodes": [
+        { "id": "tree_1", "asset": "tree_stylized", "pos": [8, 0, 8] },
+        { "id": "tree_2", "asset": "tree_stylized", "pos": [-10, 0, 4], "scale": 1.2 }
+      ]
+    }
+  ]
+}

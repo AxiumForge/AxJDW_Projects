@@ -1,0 +1,11 @@
+{
+  "id": "mountain_world_scene",
+  "type": "jdw.scene",
+  "nodes": [
+    {
+      "id": "mountain_range",
+      "asset": "mountain_range_asset",
+      "pos": [0, 0, 0]
+    }
+  ]
+}

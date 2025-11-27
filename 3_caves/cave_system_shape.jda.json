@@ -1,0 +1,33 @@
+{
+  "id": "cave_system_shape",
+  "type": "jda.asset",
+  "kind": "sdf_csg_tree",
+  "data": {
+    "op": "smooth_union",
+    "blend_radius": 8.0,
+    "children": [
+      {
+        "id": "main_chamber",
+        "asset_lib": "cave_primitives_lib",
+        "asset_key": "generic_cave_tunnel",
+        "material": "mat_cave_rock"
+      },
+      {
+        "id": "secondary_chamber",
+        "asset_lib": "cave_primitives_lib",
+        "asset_key": "generic_cave_tunnel",
+        "pos": [18, 0, 5],
+        "scale": 0.7,
+        "material": "mat_cave_rock"
+      },
+      {
+        "id": "high_tunnel",
+        "asset_lib": "cave_primitives_lib",
+        "asset_key": "generic_cave_tunnel",
+        "pos": [-5, 10, -8],
+        "scale": 0.5,
+        "material": "mat_cave_rock"
+      }
+    ]
+  }
+}
