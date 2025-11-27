@@ -1,10 +1,77 @@
 import haxe.Json;
+import haxe.ds.StringMap; // Added this import
+
+// --- JDA/JDW Type Definitions for better type safety ---
+
+typedef TSceneNode = {
+    var id:String;
+    var asset_lib:String;
+    var asset_key:String;
+    @:optional var animation:TAnimationRef;
+    @:optional var pos:Array<Float>;
+    @:optional var scale:Float;
+}
+
+typedef TScene = {
+    var id:String;
+    var type:String;
+    var scene_context:TSceneContext;
+    var nodes:Array<TSceneNode>;
+}
+
+typedef TSceneContext = {
+    var time_control:TTimeControl;
+}
+
+typedef TTimeControl = {
+    var time_unit:String;
+    var seconds_per_unit:Float;
+}
+
+typedef TMaterialParam = {
+    @:optional var baseColor:Array<Float>;
+    @:optional var emissive_color:Array<Float>;
+    @:optional var intensity:Float;
+}
+
+typedef TMaterial = {
+    var id:String;
+    var shader:String;
+    var parameters:TMaterialParam;
+}
+
+typedef TBodyData = {
+    var kind:String;
+    var data:TBodyPrimitiveData;
+}
+
+typedef TBodyPrimitiveData = {
+    var primitive_type:String;
+    var radius:Float;
+    var material:String;
+}
+
+typedef TAnimationRef = {
+    var source_lib:String;
+    var animation_key:String;
+    @:optional var autoplay:Bool;
+}
+
+typedef TOrbitParam = {
+    var kind:String;
+    var orbital_period_days:Float;
+    var semi_major_axis:Float;
+    var eccentricity:Float;
+    var inclination:Float;
+    var initial_angle_degrees:Float;
+}
+
 
 class Data {
-    public static var scene = Json.parse(sceneData);
-    public static var bodies = Json.parse(celestialBodiesData).data;
-    public static var materials = Json.parse(materialsData).data;
-    public static var orbits = Json.parse(orbitalAnimationsData).data;
+    public static var scene:TScene = Json.parse(sceneData);
+    public static var bodies:StringMap<TBodyData> = Json.parse(celestialBodiesData).data;
+    public static var materials:Array<TMaterial> = Json.parse(materialsData).data;
+    public static var orbits:StringMap<TOrbitParam> = Json.parse(orbitalAnimationsData).data;
 
     static final sceneData = '
     {

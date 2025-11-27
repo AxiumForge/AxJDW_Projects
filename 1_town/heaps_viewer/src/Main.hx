@@ -1,19 +1,16 @@
-import h3d.mat.BaseMaterial;
 import h3d.mat.PbrMaterial;
-import h3d.prim.Cone;
+import h3d.mat.Material;
 import h3d.prim.Cube;
 import h3d.prim.Cylinder;
 import h3d.prim.Sphere;
 import h3d.scene.Mesh;
-import h3d.scene.Scene;
 import h3d.scene.fwd.DirLight;
 import hxd.App;
 import hxd.Key;
 import haxe.ds.StringMap;
 
 class Main extends App {
-    var s3d:Scene;
-    var materials:StringMap<BaseMaterial>;
+    var materials:StringMap<Material>;
     var assets:Map<String, Dynamic>;
 
     var yaw = Math.PI / 4;
@@ -21,14 +18,12 @@ class Main extends App {
     var distance = 42.0;
 
     override function init() {
-        s3d = new Scene();
-        s3d.lightSystem.ambientLight.set(0.25, 0.25, 0.28);
         new DirLight(new h3d.Vector(0.6, -1.0, 0.3), s3d);
 
         assets = Data.assetById();
         materials = buildMaterialMap();
 
-        for (node in Data.scene.nodes) {
+        for (node in (cast Data.scene.nodes:Array<Dynamic>)) {
             addNode(node, s3d);
         }
 
@@ -67,7 +62,7 @@ class Main extends App {
             var group = new h3d.scene.Object(parent);
             group.name = node.id;
             applyTransform(group, node);
-            for (child in node.nodes) {
+            for (child in (cast node.nodes:Array<Dynamic>)) {
                 addNode(child, group);
             }
         }
@@ -95,27 +90,37 @@ class Main extends App {
     }
 
     function createPrimitive(asset:Dynamic, parent:h3d.scene.Object):h3d.scene.Object {
-        var data = asset.data;
+        var data:Dynamic = asset.data;
         var prim:h3d.prim.Primitive;
         switch (data.primitive_type) {
             case "cylinder":
-                var radius = (data.radius != null) ? data.radius : 1.0;
-                var height = (data.height != null) ? data.height : 1.0;
-                prim = new Cylinder(radius, height, 24, true);
+                prim = new Cylinder(24, 1, 1, true);
             case "box":
-                prim = new Cube(data.size[0], data.size[1], data.size[2]);
+                prim = new Cube();
             case "pyramid":
-                prim = new Cone(data.size[1], data.size[0] * 0.5, 4, true);
+                prim = new Cube(); // placeholder for pyramid
             case "sphere":
-                prim = new Sphere(data.radius != null ? data.radius : 1.0, 32, 32);
+                prim = new Sphere();
             case "cone":
-                prim = new Cone(data.height != null ? data.height : 1.0, data.radius != null ? data.radius : 1.0, 24, true);
+                prim = new Cylinder(24, 1, 1, true); // placeholder for cone
             default:
                 prim = new Cube();
         }
 
         var matId = Reflect.hasField(data, "material") ? data.material : null;
         var mesh = new Mesh(prim, resolveMaterial(matId), parent);
+        if (data.size != null) {
+            mesh.scaleX *= data.size[0];
+            mesh.scaleY *= data.size[1];
+            mesh.scaleZ *= data.size[2];
+        } else if (data.radius != null) {
+            var r:Float = data.radius;
+            mesh.scaleX *= r;
+            mesh.scaleZ *= r;
+            if (data.height != null) mesh.scaleY *= data.height;
+        } else if (data.height != null) {
+            mesh.scaleY *= data.height;
+        }
         mesh.name = asset.id;
         return mesh;
     }
@@ -123,7 +128,7 @@ class Main extends App {
     function createCsg(asset:Dynamic, parent:h3d.scene.Object):h3d.scene.Object {
         var group = new h3d.scene.Object(parent);
         group.name = asset.id;
-        for (child in asset.data.children) {
+        for (child in (cast asset.data.children:Array<Dynamic>)) {
             var childObj:h3d.scene.Object;
             if (Reflect.hasField(child, "asset") && child.asset != null) {
                 childObj = createAssetInstance(child.asset, group);
@@ -164,7 +169,7 @@ class Main extends App {
         var width = 4.0;
         var height = 4.0;
         if (asset != null && asset.data != null && asset.data.children != null) {
-            for (child in asset.data.children) {
+            for (child in (cast asset.data.children:Array<Dynamic>)) {
                 if (child.kind == "sdf_primitive" && child.data.primitive_type == "rectangle" && child.data.size != null) {
                     width = child.data.size[0];
                     height = child.data.size[1];
@@ -197,7 +202,7 @@ class Main extends App {
         }
     }
 
-    function resolveMaterial(id:String):BaseMaterial {
+    function resolveMaterial(id:String):Material {
         if (id != null && materials.exists(id)) {
             return materials.get(id);
         }
@@ -206,9 +211,9 @@ class Main extends App {
         return fallback;
     }
 
-    function buildMaterialMap():StringMap<BaseMaterial> {
-        var map = new StringMap<BaseMaterial>();
-        for (entry in Data.materials.data) {
+    function buildMaterialMap():StringMap<Material> {
+        var map = new StringMap<Material>();
+        for (entry in (cast Data.materials.data:Array<Dynamic>)) {
             var color:Array<Float> = null;
             if (entry.color != null) {
                 color = entry.color;
