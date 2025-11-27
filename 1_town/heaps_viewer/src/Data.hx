@@ -1,51 +1,7 @@
 import haxe.Json;
 
 class Data {
-    public static final scene:Dynamic = parse(sceneData);
-
-    public static final ground:Dynamic = parse(groundData);
-    public static final buildingPrimitive:Dynamic = parse(buildingPrimitiveData);
-    public static final buildingHybrid:Dynamic = parse(buildingHybridData);
-    public static final facadeWindow:Dynamic = parse(facadeWindowData);
-    public static final roofComplex:Dynamic = parse(roofComplexData);
-    public static final treeStylized:Dynamic = parse(treeStylizedData);
-    public static final materials:Dynamic = parse(materialsData);
-    public static final shaderSimpleLit:Dynamic = parse(simpleLitData);
-
-    public static final assets:Array<Dynamic> = [
-        ground,
-        buildingPrimitive,
-        buildingHybrid,
-        facadeWindow,
-        roofComplex,
-        treeStylized
-    ];
-
-    public static function assetById():Map<String, Dynamic> {
-        var m = new Map<String, Dynamic>();
-        for (a in assets) {
-            m.set(a.id, a);
-        }
-        return m;
-    }
-
-    static inline function parse(raw:String):Dynamic {
-        return Json.parse(stripComments(raw));
-    }
-
-    static inline function stripComments(raw:String):String {
-        var cleaned = new StringBuf();
-        for (line in raw.split("\n")) {
-            var idx = line.indexOf("//");
-            if (idx != -1) {
-                line = line.substr(0, idx);
-            }
-            cleaned.add(line);
-            cleaned.add("\n");
-        }
-        return cleaned.toString();
-    }
-
+    // Raw JDW/JDA blobs (declared first so HL init order is safe)
     static final sceneData = '
     {
       "id": "town_scene",
@@ -233,4 +189,49 @@ class Data {
         }
       }
     }';
+
+    // Parsed objects (after the raw strings)
+    public static final scene:Dynamic = parse(sceneData);
+    public static final ground:Dynamic = parse(groundData);
+    public static final buildingPrimitive:Dynamic = parse(buildingPrimitiveData);
+    public static final buildingHybrid:Dynamic = parse(buildingHybridData);
+    public static final facadeWindow:Dynamic = parse(facadeWindowData);
+    public static final roofComplex:Dynamic = parse(roofComplexData);
+    public static final treeStylized:Dynamic = parse(treeStylizedData);
+    public static final materials:Dynamic = parse(materialsData);
+    public static final shaderSimpleLit:Dynamic = parse(simpleLitData);
+
+    public static final assets:Array<Dynamic> = [
+        ground,
+        buildingPrimitive,
+        buildingHybrid,
+        facadeWindow,
+        roofComplex,
+        treeStylized
+    ];
+
+    public static function assetById():Map<String, Dynamic> {
+        var m = new Map<String, Dynamic>();
+        for (a in assets) {
+            m.set(a.id, a);
+        }
+        return m;
+    }
+
+    static inline function parse(raw:String):Dynamic {
+        return Json.parse(stripComments(raw));
+    }
+
+    static inline function stripComments(raw:String):String {
+        var cleaned = new StringBuf();
+        for (line in raw.split("\n")) {
+            var idx = line.indexOf("//");
+            if (idx != -1) {
+                line = line.substr(0, idx);
+            }
+            cleaned.add(line);
+            cleaned.add("\n");
+        }
+        return cleaned.toString();
+    }
 }
